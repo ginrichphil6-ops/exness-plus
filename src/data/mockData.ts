@@ -1,0 +1,110 @@
+import { Transaction, PortfolioData, ChartPoint } from '../types';
+
+export const INITIAL_PORTFOLIO: PortfolioData = {
+  accountHolder: 'Mbifong Cornelius',
+  accountId: 'EXP-CM-904128',
+  tier: 'VIP Platinum Asset Vault',
+  currency: 'XAF',
+  startDate: 'July 15, 2026',
+  maturityDate: 'January 15, 2027',
+  totalDurationDays: 184,
+  elapsedDays: 75,
+  initialDeposit: 200000,
+  currentBalance: 432680.50,
+  projectedReturn: 950000,
+  isTickerActive: true,
+};
+
+// Target date timestamp for January 15, 2027 00:00:00 GMT
+export const MATURITY_TIMESTAMP = new Date('2027-01-15T00:00:00Z').getTime();
+
+export const INITIAL_TRANSACTIONS: Transaction[] = [
+  {
+    id: 'tx-001',
+    reference: 'EXP-DEP-20260715-01',
+    type: 'deposit',
+    title: 'Initial Capital Investment Deposit',
+    amount: 200000,
+    date: 'July 15, 2026 · 10:24 AM',
+    timestamp: new Date('2026-07-15T10:24:00Z').getTime(),
+    status: 'completed',
+    method: 'MTN Mobile Money (CEMAC)',
+    description: 'Initial principal funding into 6-Month High Yield Fixed Vault under Exness Plus Prime Guarantee.',
+    balanceAfter: 200000,
+  },
+  {
+    id: 'tx-002',
+    reference: 'EXP-YLD-20260731-08',
+    type: 'yield',
+    title: 'Month 1 Accrued Compound Yield',
+    amount: 58400,
+    date: 'July 31, 2026 · 11:59 PM',
+    timestamp: new Date('2026-07-31T23:59:00Z').getTime(),
+    status: 'completed',
+    method: 'Automated Smart Contract Distribution',
+    description: 'Bi-weekly compound yield distributed from Exness Liquidity Yield Reserve.',
+    balanceAfter: 258400,
+  },
+  {
+    id: 'tx-003',
+    reference: 'EXP-YLD-20260815-14',
+    type: 'yield',
+    title: 'Mid-Term Growth Accrual Dividend',
+    amount: 64200,
+    date: 'August 15, 2026 · 11:59 PM',
+    timestamp: new Date('2026-08-15T23:59:00Z').getTime(),
+    status: 'completed',
+    method: 'Automated Smart Contract Distribution',
+    description: 'Month 1.5 performance distribution credited directly to principal base.',
+    balanceAfter: 322600,
+  },
+  {
+    id: 'tx-004',
+    reference: 'EXP-YLD-20260831-22',
+    type: 'yield',
+    title: 'Month 2 Accrued Compound Yield',
+    amount: 54100,
+    date: 'August 31, 2026 · 11:59 PM',
+    timestamp: new Date('2026-08-31T23:59:00Z').getTime(),
+    status: 'completed',
+    method: 'Automated Smart Contract Distribution',
+    description: 'Automated compounding dividend credit based on active 6-month term rate.',
+    balanceAfter: 376700,
+  },
+  {
+    id: 'tx-005',
+    reference: 'EXP-YLD-20260915-31',
+    type: 'yield',
+    title: 'Bi-Weekly Vault Yield Distribution',
+    amount: 55980.50,
+    date: 'September 15, 2026 · 11:59 PM',
+    timestamp: new Date('2026-09-15T23:59:00Z').getTime(),
+    status: 'completed',
+    method: 'Automated Smart Contract Distribution',
+    description: 'Month 2.5 compounding credit distributed to active vault balance.',
+    balanceAfter: 432680.50,
+  },
+];
+
+export const CHART_DATA_SERIES: ChartPoint[] = [
+  { day: 0, date: 'Jul 15 (Start)', actual: 200000, projected: 200000, label: 'Capital Injection' },
+  { day: 15, date: 'Jul 30', actual: 258400, projected: 245000, label: 'Early Accrual' },
+  { day: 30, date: 'Aug 14', actual: 322600, projected: 310000, label: 'Month 1 Milestone' },
+  { day: 45, date: 'Aug 29', actual: 376700, projected: 370000, label: 'Mid Accrual' },
+  { day: 60, date: 'Sep 13', actual: 418200, projected: 425000, label: 'Month 2 Milestone' },
+  { day: 75, date: 'Sep 28 (Today)', actual: 432680, projected: 455000, label: 'Current Valuation' },
+  { day: 90, date: 'Oct 13', actual: undefined, projected: 520000, label: 'Month 3 Target' },
+  { day: 105, date: 'Oct 28', actual: undefined, projected: 590000, label: 'Accelerated Yield' },
+  { day: 120, date: 'Nov 12', actual: undefined, projected: 670000, label: 'Month 4 Target' },
+  { day: 135, date: 'Nov 27', actual: undefined, projected: 750000, label: 'Compounding Curve' },
+  { day: 150, date: 'Dec 12', actual: undefined, projected: 830000, label: 'Month 5 Target' },
+  { day: 165, date: 'Dec 27', actual: undefined, projected: 895000, label: 'Final Sprint' },
+  { day: 180, date: 'Jan 15 (Maturity)', actual: undefined, projected: 950000, label: 'Full 6-Month Maturity' },
+];
+
+export const TOP_UP_PRESETS = [
+  { amount: 50000, label: '+50,000 XAF', projectedBonus: 237500 },
+  { amount: 100000, label: '+100,000 XAF', projectedBonus: 475000 },
+  { amount: 200000, label: '+200,000 XAF', projectedBonus: 950000 },
+  { amount: 500000, label: '+500,000 XAF', projectedBonus: 2375000 },
+];

@@ -1,0 +1,6 @@
+{
+  "name": "Exness Plus - Asset Investment Dashboard",
+  "description": "Professional financial asset investment portfolio dashboard for Mbifong Cornelius, featuring live asset tracking, projected returns, countdown progress, and secure locked vault withdrawals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
