@@ -220,7 +220,7 @@ export const WithdrawModal: React.FC<WithdrawModalProps> = ({
           {/* Contract Guarantee Note */}
           <div className="pt-2 text-[11px] text-slate-500 flex items-center gap-2 border-t border-slate-800/80">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>Exness Plus Custodial Guarantee: Your funds remain 100% secure in segregated liquidity nodes.</span>
+            <span>Exness Custodial Guarantee: Your funds remain 100% secure in segregated liquidity nodes.</span>
           </div>
         </div>
       </div>

@@ -76,7 +76,7 @@ export const PortfolioStats: React.FC<PortfolioStatsProps> = ({
               Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-amber-200">{portfolio.accountHolder}</span>
             </h1>
             <p className="text-sm text-slate-400 mt-1 max-w-2xl">
-              Your 6-month capital compounding contract is actively accruing compound yield. All returns are backed by Exness Plus automated liquidity reserves.
+              Your 6-month capital compounding contract is actively accruing compound yield. All returns are backed by Exness automated liquidity reserves.
             </p>
           </div>
 

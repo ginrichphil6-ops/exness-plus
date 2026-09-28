@@ -68,7 +68,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
                 <span className="text-lg font-extrabold text-white">
-                  Exness <span className="text-emerald-400">Plus</span>
+                  Exness
                 </span>
               </div>
               <span className="text-[11px] font-mono text-slate-400 block mt-0.5">

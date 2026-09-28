@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-white font-sans">
-                    Exness <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Plus</span>
+                    Exness
                   </span>
                 </div>
                 <span className="text-[11px] font-mono tracking-wider text-slate-400 uppercase">

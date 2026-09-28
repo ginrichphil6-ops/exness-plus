@@ -172,7 +172,7 @@ export default function App() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `ExnessPlus_Statement_${portfolio.accountHolder.replace(' ', '_')}_2026.csv`);
+    link.setAttribute('download', `Exness_Statement_${portfolio.accountHolder.replace(' ', '_')}_2026.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -238,7 +238,7 @@ export default function App() {
       <footer className="border-t border-slate-800/80 bg-[#070b12] py-8 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-300">Exness Plus</span>
+            <span className="font-semibold text-slate-300">Exness</span>
             <span>·</span>
             <span>Tier-1 Regulated Digital Asset Vault</span>
             <span>·</span>

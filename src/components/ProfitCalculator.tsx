@@ -27,7 +27,7 @@ export const ProfitCalculator: React.FC<ProfitCalculatorProps> = ({ onInvestAmou
           </div>
           <div>
             <h3 className="text-base font-bold text-white tracking-tight">
-              Exness Plus Yield Simulator
+              Exness Yield Simulator
             </h3>
             <p className="text-xs text-slate-400">
               Calculate projected earnings on custom capital allocations
