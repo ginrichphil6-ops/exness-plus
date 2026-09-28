@@ -62,8 +62,10 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   // Grid levels (200k, 400k, 600k, 800k, 1M)
   const yTicks = [200000, 400000, 600000, 800000, 1000000];
 
-  const activePoint = hoverIndex !== null ? data[hoverIndex] : data[5]; // default to current day (day 75)
-  const activeX = hoverIndex !== null ? getX(hoverIndex) : getX(5);
+  const defaultIdx = Math.max(0, actualItems.length - 1);
+  const activeIdx = hoverIndex !== null ? hoverIndex : defaultIdx;
+  const activePoint = data[activeIdx] || data[0];
+  const activeX = getX(activeIdx);
 
   return (
     <div className="bg-[#0d1424] border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl">
@@ -103,7 +105,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            Realized (Days 0-75)
+            Realized to Date
           </button>
           <button
             onClick={() => setActiveTab('projected')}

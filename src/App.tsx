@@ -30,26 +30,35 @@ import { formatXAF } from './utils/formatters';
 export default function App() {
   // Load state from localStorage or use defaults
   const [portfolio, setPortfolio] = useState<PortfolioData>(() => {
-    const saved = localStorage.getItem('exness_plus_portfolio');
+    const saved = localStorage.getItem('exness_plus_portfolio_v2');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.startDate === INITIAL_PORTFOLIO.startDate) {
+          return parsed;
+        }
       } catch (e) {
         console.error(e);
       }
     }
+    // Clean up old cached v1
+    localStorage.removeItem('exness_plus_portfolio');
     return INITIAL_PORTFOLIO;
   });
 
   const [transactions, setTransactions] = useState<Transaction[]>(() => {
-    const saved = localStorage.getItem('exness_plus_transactions');
+    const saved = localStorage.getItem('exness_plus_transactions_v2');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.length && parsed[parsed.length - 1].reference.includes('20260919')) {
+          return parsed;
+        }
       } catch (e) {
         console.error(e);
       }
     }
+    localStorage.removeItem('exness_plus_transactions');
     return INITIAL_TRANSACTIONS;
   });
 
@@ -64,11 +73,11 @@ export default function App() {
 
   // Save changes to localStorage
   useEffect(() => {
-    localStorage.setItem('exness_plus_portfolio', JSON.stringify(portfolio));
+    localStorage.setItem('exness_plus_portfolio_v2', JSON.stringify(portfolio));
   }, [portfolio]);
 
   useEffect(() => {
-    localStorage.setItem('exness_plus_transactions', JSON.stringify(transactions));
+    localStorage.setItem('exness_plus_transactions_v2', JSON.stringify(transactions));
   }, [transactions]);
 
   // Live progressive ticker simulation: small compound accrual increments every 3s
@@ -135,9 +144,11 @@ export default function App() {
   };
 
   const handleResetData = () => {
-    if (confirm('Reset portfolio back to initial state (200,000 XAF initial deposit)?')) {
+    if (confirm('Reset portfolio back to initial state (200,000 XAF deposit on September 19, 2026)?')) {
       localStorage.removeItem('exness_plus_portfolio');
       localStorage.removeItem('exness_plus_transactions');
+      localStorage.removeItem('exness_plus_portfolio_v2');
+      localStorage.removeItem('exness_plus_transactions_v2');
       setPortfolio(INITIAL_PORTFOLIO);
       setTransactions(INITIAL_TRANSACTIONS);
       showToast('Portfolio reset to initial verified balance.');

@@ -15,10 +15,10 @@ export const PortfolioBreakdown: React.FC<PortfolioBreakdownProps> = ({ portfoli
   ];
 
   const milestones = [
-    { month: 'Month 1', label: 'Initial Ramp-Up', target: 310000, status: 'achieved', date: 'Aug 15, 2026' },
-    { month: 'Month 2.5', label: 'Current Progress', target: 432680, status: 'current', date: 'Today' },
-    { month: 'Month 4', label: 'Acceleration Phase', target: 670000, status: 'upcoming', date: 'Nov 12, 2026' },
-    { month: 'Month 6', label: 'Full Vault Maturity', target: 950000, status: 'maturity', date: 'Jan 15, 2027' },
+    { month: 'Day 9 (Today)', label: 'Current Progress', target: Math.round(portfolio.currentBalance), status: 'current', date: 'Sep 28, 2026' },
+    { month: 'Month 1', label: 'Initial Ramp-Up', target: 310000, status: 'upcoming', date: 'Oct 19, 2026' },
+    { month: 'Month 3', label: 'Acceleration Phase', target: 555000, status: 'upcoming', date: 'Dec 18, 2026' },
+    { month: 'Month 6', label: 'Full Vault Maturity', target: portfolio.projectedReturn, status: 'maturity', date: portfolio.maturityDate },
   ];
 
   return (
